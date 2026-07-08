@@ -19,8 +19,8 @@ public class Node {
     @Enumerated(EnumType.STRING)
     private NodeState state;
     
-    private double powerOutput; // MW
-    private double batteryLevel; // 0-100
+    private double powerOutput; 
+    private double batteryLevel;
     private LocalDateTime lastUpdate;
     private boolean fault;
 }
