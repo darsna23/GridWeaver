@@ -1,0 +1,12 @@
+package com.gis.model;
+
+public enum NodeEvent {
+    GRID_LOAD_HIGH,
+    GRID_LOAD_LOW,
+    BATTERY_FULL,
+    BATTERY_LOW,
+    FAULT_DETECTED,
+    FAULT_CLEARED,
+    POWER_TRANSFER_REQUEST,
+    POWER_TRANSFER_COMPLETE
+}
