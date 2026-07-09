@@ -1,3 +1,4 @@
+// src/main/java/com/gis/config/WebSocketConfig.java
 package com.gis.config;
 
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +21,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
                 .setAllowedOrigins("http://localhost:3000")
-                .withSockJS();
+                .withSockJS()
+                .setClientLibraryUrl("https://cdn.jsdelivr.net/npm/sockjs-client@1.6.1/dist/sockjs.min.js");
     }
 }

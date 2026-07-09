@@ -1,5 +1,7 @@
+// src/main/java/com/gis/controller/NodeController.java
 package com.gis.controller;
 
+import com.gis.model.DashboardStats;
 import com.gis.model.Node;
 import com.gis.model.NodeState;
 import com.gis.service.NodeService;
@@ -12,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/nodes")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class NodeController {
     
     private final NodeService nodeService;
@@ -27,16 +30,25 @@ public class NodeController {
     }
     
     @GetMapping("/stats")
-    public ResponseEntity<Map<String, Object>> getStats() {
-        Map<String, Object> stats = new HashMap<>();
-        stats.put("totalNodes", nodeService.getAllNodes().size());
-        stats.put("onlineNodes", nodeService.getAllNodes().stream()
-            .filter(n -> n.getState() != NodeState.FAULT).count());
-        stats.put("normalNodes", nodeService.countByState(NodeState.NORMAL));
-        stats.put("chargingNodes", nodeService.countByState(NodeState.CHARGING));
-        stats.put("dischargingNodes", nodeService.countByState(NodeState.DISCHARGING));
-        stats.put("faultNodes", nodeService.countByState(NodeState.FAULT));
-        stats.put("activePowerMW", nodeService.getTotalPowerOutput());
-        return ResponseEntity.ok(stats);
+    public ResponseEntity<DashboardStats> getStats() {
+        return ResponseEntity.ok(nodeService.getStats());
+    }
+    
+    @PostMapping("/initialize")
+    public ResponseEntity<List<Node>> initializeNodes(@RequestParam(defaultValue = "1000") int count) {
+        return ResponseEntity.ok(nodeService.initializeNodes(count));
+    }
+    
+    @PutMapping("/{nodeId}/state")
+    public ResponseEntity<Node> updateState(
+            @PathVariable String nodeId,
+            @RequestParam NodeState state) {
+        return ResponseEntity.ok(nodeService.updateNodeState(nodeId, state));
+    }
+    
+    @PutMapping("/{nodeId}")
+    public ResponseEntity<Node> updateNode(@PathVariable String nodeId, @RequestBody Node node) {
+        node.setNodeId(nodeId);
+        return ResponseEntity.ok(nodeService.updateNode(node));
     }
 }

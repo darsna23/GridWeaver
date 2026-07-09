@@ -1,5 +1,7 @@
+// src/main/java/com/gis/service/NodeService.java
 package com.gis.service;
 
+import com.gis.model.DashboardStats;
 import com.gis.model.Node;
 import com.gis.model.NodeState;
 import com.gis.repository.NodeRepository;
@@ -28,7 +30,7 @@ public class NodeService {
         
         for (int i = 0; i < count; i++) {
             Node node = new Node();
-            node.setNodeId("NODE-" + UUID.randomUUID().toString().substring(0, 8));
+            node.setNodeId("NODE-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
             node.setZone("Zone-" + random.nextInt(10));
             node.setLatitude(40.7128 + (random.nextDouble() - 0.5) * 0.1);
             node.setLongitude(-74.0060 + (random.nextDouble() - 0.5) * 0.1);
@@ -43,36 +45,6 @@ public class NodeService {
         return nodeRepository.saveAll(nodes);
     }
     
-    @Transactional
-    public Node updateNodeState(String nodeId, NodeState newState) {
-        Node node = nodeRepository.findByNodeId(nodeId)
-            .orElseThrow(() -> new RuntimeException("Node not found: " + nodeId));
-        
-        node.setState(newState);
-        node.setLastUpdate(LocalDateTime.now());
-        if (newState == NodeState.FAULT) {
-            node.setFault(true);
-        }
-        
-        log.info("Node {} state updated to {}", nodeId, newState);
-        return nodeRepository.save(node);
-    }
-    
-    public Node updateNode(String nodeId, Node updateData) {
-        Node node = nodeRepository.findByNodeId(nodeId)
-            .orElseThrow(() -> new RuntimeException("Node not found: " + nodeId));
-        
-        if (updateData.getPowerOutput() != 0) {
-            node.setPowerOutput(updateData.getPowerOutput());
-        }
-        if (updateData.getBatteryLevel() != 0) {
-            node.setBatteryLevel(updateData.getBatteryLevel());
-        }
-        node.setLastUpdate(LocalDateTime.now());
-        
-        return nodeRepository.save(node);
-    }
-    
     public List<Node> getAllNodes() {
         return nodeRepository.findAll();
     }
@@ -82,11 +54,61 @@ public class NodeService {
             .orElseThrow(() -> new RuntimeException("Node not found: " + nodeId));
     }
     
-    public long countByState(NodeState state) {
-        return nodeRepository.countByState(state);
+    @Transactional
+    public Node updateNodeState(String nodeId, NodeState newState) {
+        Node node = getNode(nodeId);
+        node.setState(newState);
+        node.setLastUpdate(LocalDateTime.now());
+        if (newState == NodeState.FAULT) {
+            node.setFault(true);
+        } else {
+            node.setFault(false);
+        }
+        return nodeRepository.save(node);
     }
     
-    public double getTotalPowerOutput() {
-        return nodeRepository.sumPowerOutput();
+    @Transactional
+    public Node updateNode(Node node) {
+        Node existing = getNode(node.getNodeId());
+        if (node.getPowerOutput() != null) {
+            existing.setPowerOutput(node.getPowerOutput());
+        }
+        if (node.getBatteryLevel() != null) {
+            existing.setBatteryLevel(node.getBatteryLevel());
+        }
+        if (node.getState() != null) {
+            existing.setState(node.getState());
+        }
+        if (node.getFault() != null) {
+            existing.setFault(node.getFault());
+        }
+        existing.setLastUpdate(LocalDateTime.now());
+        return nodeRepository.save(existing);
+    }
+    
+    public DashboardStats getStats() {
+        long totalNodes = nodeRepository.count();
+        long onlineNodes = nodeRepository.countOnlineNodes();
+        long normalNodes = nodeRepository.countByState(NodeState.NORMAL);
+        long chargingNodes = nodeRepository.countByState(NodeState.CHARGING);
+        long dischargingNodes = nodeRepository.countByState(NodeState.DISCHARGING);
+        long faultNodes = nodeRepository.countByState(NodeState.FAULT);
+        Double totalPower = nodeRepository.sumPowerOutput();
+        
+        double activePowerMW = totalPower != null ? totalPower : 0;
+        double stability = totalNodes > 0 ? ((double) onlineNodes / totalNodes) * 100 : 0;
+        String status = stability > 95 ? "Stable" : stability > 85 ? "Degraded" : "Critical";
+        
+        return new DashboardStats(
+            totalNodes,
+            onlineNodes,
+            normalNodes,
+            chargingNodes,
+            dischargingNodes,
+            faultNodes,
+            activePowerMW,
+            stability,
+            status
+        );
     }
 }

@@ -1,3 +1,4 @@
+// src/main/java/com/gis/controller/WebSocketController.java
 package com.gis.controller;
 
 import com.gis.model.Node;
@@ -8,6 +9,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -17,7 +20,13 @@ public class WebSocketController {
     
     @MessageMapping("/nodes/all")
     @SendTo("/topic/nodes")
-    public Iterable<Node> getAllNodes() {
+    public List<Node> getAllNodes() {
         return nodeService.getAllNodes();
+    }
+    
+    @MessageMapping("/nodes/stats")
+    @SendTo("/topic/stats")
+    public Object getStats() {
+        return nodeService.getStats();
     }
 }

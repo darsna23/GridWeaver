@@ -1,26 +1,34 @@
+// src/main/java/com/gis/model/Node.java
 package com.gis.model;
 
-import lombok.Data;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "nodes")
 public class Node {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @Column(unique = true, nullable = false)
     private String nodeId;
+    
     private String zone;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
     
     @Enumerated(EnumType.STRING)
     private NodeState state;
     
-    private double powerOutput; 
-    private double batteryLevel;
+    private Double powerOutput;
+    private Double batteryLevel;
     private LocalDateTime lastUpdate;
-    private boolean fault;
+    private Boolean fault;
 }
