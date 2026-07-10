@@ -1,0 +1,8 @@
+kafka_2.13-*/
+kafka.tgz
+*.tgz
+gridweaver-backend/target/
+gridweaver-frontend/node_modules/
+gridweaver-frontend/dist/
+.idea/
+.vscode/
