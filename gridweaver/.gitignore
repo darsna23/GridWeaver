@@ -1,8 +1,7 @@
-kafka_2.13-*/
-kafka.tgz
+node_modules/
+target/
+dist/
+build/
+.vite/
+*.jar
 *.tgz
-gridweaver-backend/target/
-gridweaver-frontend/node_modules/
-gridweaver-frontend/dist/
-.idea/
-.vscode/
