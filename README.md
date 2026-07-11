@@ -151,17 +151,6 @@ http://localhost:5173
 
 ---
 
-## 👨‍💻 Author
-
-**Darsna Saravanakumar**
-
-BE Computer Science and Engineering
-
-University College of Engineering, BIT Campus, Trichy
-
-GitHub: https://github.com/darsna23/GridWeaver
-
----
 
 ## 📄 License
 
