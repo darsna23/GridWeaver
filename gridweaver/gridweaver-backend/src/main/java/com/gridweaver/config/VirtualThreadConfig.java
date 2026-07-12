@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 @Configuration
 public class VirtualThreadConfig {
 
-    /** General-purpose virtual-thread executor used by the IoT simulator and Kafka listeners. */
+    
     @Bean(name = "virtualThreadExecutor")
     public ExecutorService virtualThreadExecutor() {
         return Executors.newVirtualThreadPerTaskExecutor();
