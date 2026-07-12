@@ -9,22 +9,7 @@ import org.springframework.statemachine.config.builders.StateMachineConfiguratio
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer;
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer;
 
-/**
- * Defines the lifecycle every GridNode's state machine follows:
- *
- *                 +-------------------+
- *      BATTERY_LOW|                   |LOAD_HIGH
- *          v       v                   v
- *   [CHARGING] <-- [NORMAL] --> [DISCHARGING]
- *          |    BATTERY_FULL/       |
- *          |     LOAD_NORMAL        |
- *          +-----------> ^ <--------+
- *                        |
- *      FAULT_DETECTED (from ANY state) --> [FAULT] --FAULT_CLEARED--> [NORMAL]
- *
- * One StateMachine<NodeState, NodeEvent> instance is created per node id
- * (see NodeStateMachineService), all sharing this single configuration.
- */
+
 @Configuration
 @EnableStateMachineFactory
 public class StateMachineConfig extends StateMachineConfigurerAdapter<NodeState, NodeEvent> {
