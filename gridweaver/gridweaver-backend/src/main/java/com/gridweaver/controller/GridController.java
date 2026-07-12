@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/grid")
-@CrossOrigin(origins = "*") // dev only - restrict in production
+@CrossOrigin(origins = "*") 
 public class GridController {
 
     private final GridNodeService gridNodeService;
