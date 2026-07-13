@@ -20,7 +20,7 @@ public class GridController {
         this.gridNodeService = gridNodeService;
     }
 
-    /** Used by the React app on first load, before the WebSocket takes over. */
+    
     @GetMapping("/overview")
     public GridOverviewDTO getOverview() {
         return gridNodeService.buildOverview();
