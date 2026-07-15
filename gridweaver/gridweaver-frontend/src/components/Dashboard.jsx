@@ -10,7 +10,8 @@ import {
 } from 'lucide-react';
 
 export default function Dashboard() {
-  const { overview, connected } = useGridSocket();
+  const { overview, connected } = useGridSocket();// function
+  
   const [mapMode, setMapMode] = useState('grid'); // 'grid' | 'heatmap'
 
   const now = new Date();
