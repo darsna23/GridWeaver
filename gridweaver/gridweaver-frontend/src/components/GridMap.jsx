@@ -10,7 +10,7 @@ const STATE_COLOR = {
   FAULT: '#ff5c5c'
 };
 
-/** Renders (and live-updates) a leaflet.heat layer from the current nodes. */
+
 function HeatLayer({ nodes, active }) {
   const map = useMap();
   const layerRef = useRef(null);
