@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 
 export default function Dashboard() {
-  const { overview, connected } = useGridSocket();
+  const { overview, connected } = useGridSocket();// function
 
   const [mapMode, setMapMode] = useState('grid'); 
 
@@ -86,4 +86,3 @@ export default function Dashboard() {
     </div>
   );
 }
-//dashboard end

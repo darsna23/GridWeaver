@@ -10,7 +10,6 @@ const STATE_COLOR = {
   FAULT: '#ff5c5c'
 };
 
-// add repository
 
 function HeatLayer({ nodes, active }) {
   const map = useMap();
