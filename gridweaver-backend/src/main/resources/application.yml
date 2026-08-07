@@ -6,7 +6,7 @@ spring:
     name: gridweaver-backend
   threads:
     virtual:
-      enabled: true          # Spring Boot 3.2+: use virtual threads for @Async / MVC request handling
+      enabled: true          
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
