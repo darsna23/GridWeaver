@@ -7,11 +7,7 @@ const WS_URL =
 
 const API_URL = '/api/grid/overview';
 
-/**
- * Subscribes to the backend's live grid feed. Falls back to REST polling
- * if the WebSocket can't connect (e.g. backend still starting, or Kafka
- * not yet up), and keeps retrying the socket in the background.
- */
+
 export function useGridSocket() {
   const [overview, setOverview] = useState(null);
   const [connected, setConnected] = useState(false);

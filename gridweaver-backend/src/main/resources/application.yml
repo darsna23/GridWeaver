@@ -14,7 +14,7 @@ spring:
 
 gridweaver:
   simulation:
-    node-count:  500       # set lower (e.g. 500) for local dev on modest hardware
+    node-count:  500      
     tick-ms: 2000             
 management:
   endpoints:
